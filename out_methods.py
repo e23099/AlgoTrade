@@ -6,9 +6,9 @@ def byProfit(price, x, cost, stop_limit):
 
     Example:
 
-        byProfit(20, InPrice.max(), -1)    以成本最高者計算停損點
-        byProfit(20, get_open_price(), -1) 以開盤價計算停損點
-        byProfit(100, InPrice[-1] , 1)     以最新單計算停利點
+        byProfit(price, 20, InPrice.max(), -1)    以成本最高者計算停損點
+        byProfit(price, 20, get_open_price(), -1) 以開盤價計算停損點
+        byProfit(price, 100, InPrice[-1] , 1)     以最新單計算停利點
 
     :param x: 損益點數
     :param cost: 成本計價方式(最新價、最高價、平均價、特定價格)
