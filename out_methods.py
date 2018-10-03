@@ -22,3 +22,28 @@ def byProfit(price, x, cost, stop_limit):
         return(True) # or return(cost + x * stop_limit * Trade.dir)
     else:
         return(False)
+
+# 時間出場
+    
+def byTime(day=0,hour=0,minute=0,second=0,spe_date_or_weekday,typee=1,in_time):
+    """
+    時間格式: 年(西元)月日時分秒 (特定日期或星期使用)
+             ex. 20181002180605  (2018/10/02,18:06:05) (表特定日期)
+             ex. 5  (表星期)
+    根據時間，出清所有部位。
+    
+    :param day: 平倉距離進場的時長天數
+    :param day: 平倉距離進場的時長時數
+    :param day: 平倉距離進場的時長分鐘數
+    :param day: 平倉距離進場的時長秒數
+    注:前四者組合成一時間段
+    :param spe_data_or_weekday: 特定日期或時間
+    :param typee: 1: 採用距離時長法  
+                  2: 採用特定時點法
+    :param in_time: 進場時間
+    
+    """
+    
+    
+    if typee == 1:
+        
