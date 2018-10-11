@@ -1,6 +1,6 @@
 # 損益出場
 
-def byProfit(price, x, cost, stop_limit):
+def byProfit(price, x, cost, direction, stop_limit):
     """
     根據損益點數，出清所有部位。
 
@@ -16,7 +16,7 @@ def byProfit(price, x, cost, stop_limit):
     :return: True/False 或應出場價格
     """
 
-    profit = (price - cost) * Trade.dir
+    profit = (price - cost) * direction
 
     if profit * stop_limit >= x:
         return(True) # or return(cost + x * stop_limit * Trade.dir)
@@ -99,3 +99,15 @@ def byTime(day=0,hour=0,minute=0,second=0,spe_date_or_weekday,typee=1,in_time):
             return True
         if int_spe_data_or_weekday[3] == int_time[3] :
             return True
+
+def single_reverse(direction, in_method, args):
+    """
+    in_method : 採用的進場方法(回傳值須為-1,0,1)
+    args      : 進場方法所需的參數，以一個 () 或 [] 傳入所有參數
+
+    當訊號出現不作為(0)或是與方向相反的結果(1/-1)時，平倉出場
+
+    """
+    if direction * in_method(*args) <= 0:
+        return True
+    return False
