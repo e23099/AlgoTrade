@@ -1,0 +1,149 @@
+'C:/Users/user/Desktop/TXF_min.csv'
+
+import Start
+import Stop 
+import Limit
+import Add
+import Cut
+import Time
+
+
+
+
+file=input("Enter the directory of your data(csv format):")
+data=open(file,'r')
+r=data.read()
+
+rows=r.split("\n")
+
+new_rows=[]
+for row in rows:
+    new_rows.append(row.split(","))
+clear_data=new_rows[1:-1]
+
+
+
+
+"""前處理"""
+time=0
+openn=1
+high=2
+low=3
+closee=4
+
+for row in clear_data:
+    row[0] = row[0] + " " + row[1]
+    row.pop(1)
+    if float(row[closee])>float(row[openn]):
+        row[high],row[low]=row[low],row[high]
+data.close()
+
+"""前處理"""
+
+
+
+class CTrade():
+    direction = 0
+    pos = 0
+    inPos = []
+    outPos = []
+    inTime = []
+    outTime = []
+    inPrice = []
+    outPrice = []
+    Note = []
+    
+    def __init__(self, dir, n, price, reason = "start"):
+        self.direction = dir
+        self.pos = n
+        self.inPos.append(n)
+        self.inPrice.append(price)
+        self.Note.append(reason)
+        """是否需要在進場也記錄時間"""
+    def add(self, time, n, price, reason = "add contract"):
+        self.inTime.append(time)
+        self.inPrice.append(price)
+        self.Note.append(reason)
+        self.inPos.append(n)
+        self.pos += n
+    
+    def stop(self, time, price, reason = "stop"):
+        self.outTime.append(time)
+        self.outPrice.append(price)
+        self.Note.append(reason)
+        self.outPos.append(self.pos)
+        self.pos = 0
+    
+    def limit(self, time, price, reason = "limit"):
+        self.outTime.append(time)
+        self.outPrice.append(price)
+        self.Note.append(reason)
+        self.outPos.append(self.pos)
+        self.pos = 0
+    
+    def cut(self, time, n, price, reason = "cut"):
+        self.outTime.append(time)
+        self.outPrice.append(price)
+        self.Note.append(reason)
+        self.outPos.append(n)
+        self.pos -= n
+    
+    def end(self):
+        # write trade information into a table
+        pass
+
+
+
+
+
+
+
+position=0
+
+"""
+
+for bar in clear_data:
+    if position==0:
+        Start.data_received=bar
+        
+        if Start.message==1 and bar[time]!='08:45:00':
+            trade=CTrade(Start.direct,Start.n,Start.price)
+            position=1
+            
+        elif Start.message==1 and bar[time]=='08:45:00':
+            trade=CTrade(Start.direct,Start.n,row[openn])
+            position=1
+            
+            
+    else:
+        Stop.data_received=bar
+        Limit.data_received=bar
+        Add.data_received=bar
+        Cut.data_received=bar
+        if Stop.message==1:
+            trade.stop(row[time],Stop.price)
+            position=0
+        elif Limit.message==1:
+            trade.limit(row[time],Limit.price)
+        elif Add.message==1:
+            trade.add(row[time],Add.n,Add.price)
+        elif Cut.message==1:
+            trade.cut(row[time],Cut.n,Cut.price)
+
+
+"""
+
+
+
+for bar in clear_data:
+    no = bar[0]
+    if position == 0 :
+        Time.now = Time.time_format_trans(bar[0])
+        if Time.by_time_in(1) == True:
+            position = 1
+            print(no + "進場")
+    if position == 1 :
+        Time.now = Time.time_format_trans(bar[0])
+        if Time.by_time_out(1,0,0,0,0,0,0,5) == True:
+            position = 0
+            print(no + "出場")
