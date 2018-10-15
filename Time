@@ -1,0 +1,49 @@
+"""
+
+原始時間格式 : yyyy/mm/dd/hh/mm/ss
+type 1 為週回型
+type 2 為經過時長型
+
+年,月,日,時,分,秒,週幾,一年中的第幾天,是否為夏令時
+
+
+"""
+
+import time
+ 
+in_time = ""
+
+now = ""
+
+
+def time_format_trans(t):
+    st=time.mktime(time.strptime(t,"%Y/%m/%d %H:%M:%S"))
+    return st
+
+
+
+
+
+def by_time_in(weekday):
+    return (time.gmtime(now)[-3] + 1)%7 == weekday
+
+
+
+
+
+
+
+
+
+def by_time_out(typee,year,month,day,hour,minute,second,weekday):
+    if typee == 1:
+
+        return (time.gmtime(now)[-3] + 1)%7 == weekday
+    if typee == 2:
+        out_time = [0,0,0,0,0,0,0,0,0]
+        through = [year,month,day,hour+8,minute,second]
+        for i in range(6):
+            out_time[i] = time.gmtime(in_time)[i] + through[i]
+        t_outtime = tuple(out_time)
+        return time.mktime(t_outtime) == now
+        
